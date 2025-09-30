@@ -1,0 +1,29 @@
+# Terraform .terraform directory
+.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Crash log files
+crash.log
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local .terraformrc file
+.terraformrc
+
+# Terraform plan files
+*.tfplan
+*.tfplan.binary
+
+# Keys
+*.pem
