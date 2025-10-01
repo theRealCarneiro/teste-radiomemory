@@ -1,39 +1,38 @@
 # Get default VPC and subnets
-data "aws_vpc" "default" {
-  default = true
+resource "aws_vpc" "teste_radiomemory_vpc" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = { Name = "teste-radiomemory-vpc" }
 }
 
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
+resource "aws_subnet" "teste_radiomemory_subnet_a" {
+  vpc_id            = aws_vpc.teste_radiomemory_vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "sa-east-1a"
+
+  tags = { Name = "teste-radiomemory-subnet-a" }
 }
 
-# Security group for SSH + NFS
-resource "aws_security_group" "efs_ec2_sg" {
-  name        = "efs-ec2-sg"
-  description = "Allow SSH and NFS"
-  vpc_id      = data.aws_vpc.default.id
+resource "aws_subnet" "teste_radiomemory_subnet_b" {
+  vpc_id            = aws_vpc.teste_radiomemory_vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "sa-east-1b"
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  tags = { Name = "teste-radiomemory-subnet-b" }
+}
 
-  ingress {
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+# resource "aws_subnet" "teste_radiomemory_subnet_c" {
+#   vpc_id            = aws_vpc.teste_radiomemory_vpc.id
+#   cidr_block        = "10.0.3.0/24"
+#   availability_zone = "sa-east-1c"
+#
+#   tags = { Name = "teste-radiomemory-subnet-c" }
+# }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+locals {
+  subnets_map = {
+    "a" = aws_subnet.teste_radiomemory_subnet_a.id
+    "b" = aws_subnet.teste_radiomemory_subnet_b.id
+    # "c" = aws_subnet.teste_radiomemory_subnet_c.id
   }
 }
