@@ -11,7 +11,7 @@ resource "aws_instance" "teste_radiomemory_ec2" {
                   ], count.index)
 
   key_name      = aws_key_pair.teste_radiomemory_key.key_name
-  vpc_security_group_ids = [aws_security_group.teste_radiomemory_sg.id]
+  vpc_security_group_ids = [aws_security_group.teste_radiomemory_ec2_sg.id]
 
   user_data = templatefile("${path.module}/scripts/setup-efs.sh", {
     EFS_ID = aws_efs_file_system.teste_radiomemory_efs.id
